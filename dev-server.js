@@ -60,9 +60,13 @@ function serveStaticPageIfExists(route, res) {
 const requestHandler = function (req, res) {
 	const method = req.method.toLowerCase()
 	if (method == 'get') {
+		console.log('req.url', req.url)
+		let getP = req.url.search('\\?')
+		let pathP = req.url
+		if (getP > -1) pathP = pathP.substring(0, getP)
 		// No need to ensure the route can't access other local files,
 		// since this is for development only.
-		const route = path.normalize(path.join(__dirname, 'src', req.url))
+		const route = path.normalize(path.join(__dirname, 'src', pathP))
 		if (serveStaticPageIfExists(route, res)) {
 			return
 		}
